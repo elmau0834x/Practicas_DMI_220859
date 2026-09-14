@@ -17,48 +17,96 @@ class _CounterFunctionsScreenState extends State<CounterFunctionsScreen> {
         title: const Text('Counter Functions'),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh_rounded),
+            icon: const Icon(Icons.refresh_rounded),
             onPressed: () {
               setState(() {
                 clickCounter = 0;
               });
-            }, 
+            },
           ),
         ],
       ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('$clickCounter',
-                style: const TextStyle( 
-                  fontSize: 160, fontWeight: FontWeight.w100 )),
-              Text('Click${clickCounter == 1 ? '' : 's' }', style: TextStyle( fontSize: 25 ))
-            ],
-          ),
-        ),
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FloatingActionButton(
-              onPressed: () {
-                clickCounter ++;
-                setState(() {});
-              },
-              child: const Icon( Icons.plus_one ),
+            Text(
+              '$clickCounter',
+              style: TextStyle(
+                fontSize: 160,
+                fontWeight: FontWeight.w100,
+                color: clickCounter == 0
+                    ? Colors.blue
+                    : clickCounter < 0
+                        ? Colors.red
+                        : Colors.green,
+              ),
             ),
-            
-            SizedBox(height: 15,),
-
-            FloatingActionButton(
-              onPressed: () {
-                clickCounter --;
-                setState(() {});
-              },
-              child: const Icon( Icons.exposure_minus_1_outlined ),
+            Text(
+              'Click${clickCounter == 1 || clickCounter == -1 ? '' : 's'}',
+              style: const TextStyle(
+                fontSize: 25,
+              ),
             ),
           ],
-        )
-      );
+        ),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          CustomButton(
+            icon:Icons.plus_one,
+            onPressed: () {
+              clickCounter++;
+              setState(() {
+              });
+            },
+          ),
+
+          const SizedBox(height: 15),
+
+          CustomButton(
+            icon: Icons.refresh_outlined,
+            onPressed: () {
+              clickCounter = 0;
+              setState(() {});
+            },
+          ),
+
+          const SizedBox(height: 15),
+
+          CustomButton(
+            icon: Icons.exposure_minus_1,
+            onPressed: () {
+              clickCounter--;
+              setState(() {});
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+  const CustomButton({
+    super.key,
+    required this.icon,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      //shape: const StadiumBorder(),
+      enableFeedback: true,
+      elevation: 100,
+      onPressed: onPressed,
+      child: Icon(icon),
+    );
   }
 }
