@@ -1,16 +1,22 @@
-# hello_world_app
+# hello_world_app 🚀
 
-Esta aplicacion es una practica introductoria al framework de Flutter, el fin de l apractica es conocer lo fundamental en flutter, conocimos los widgets, Stateless y Statefull y el resultado de ello es una app movil de un contador que permite sumar y restar y reiniciar, ademas de la particularidad de tener numero negativos
+Esta aplicación es una práctica introductoria al framework **Flutter**. El objetivo principal de la práctica es comprender los fundamentos del desarrollo móvil con Flutter, explorando el uso de widgets (`StatelessWidget` y `StatefulWidget`). 
 
-## Evidencia fotografica
-![Imagen donde el contador esta en 0](/hello_world_app/img/Base.png)
->Aqui se muestra la pantalla con el contador reiniciado y lo muestra en 0
+El resultado es una aplicación de un contador interactivo que permite sumar, restar, reiniciar y cuenta con la particularidad de admitir números negativos.
 
-![Imagen donde el contador esta en 0](/hello_world_app/img/minus.png)
->Aqui se muestra la pantalla con el contador en numeros negativos
+---
 
-![Imagen donde el contador esta en 0](/hello_world_app/img/plus.png)
->Aqui se muestra la pantalla con el contador en numeros positivos
+## 📸 Evidencia Fotográfica
 
-### 📊 Diagrama Interactivo de Arquitectura
-[👉 Haz clic aquí para ver el diagrama en GitHub Pages](https://elmau0834x.github.io/Practicas_DMI_220859/hello_world_app/estructura_completa_hello_world_app.html)
+| Estado Cero | Números Negativos | Números Positivos |
+| :---: | :---: | :---: |
+| ![Contador en 0](/hello_world_app/img/Base.png) | ![Contador en negativo](/hello_world_app/img/minus.png) | ![Contador en positivo](/hello_world_app/img/plus.png) |
+| *Contador reiniciado en 0.* | *Contador operando en números negativos.* | *Contador incrementando en números positivos.* |
+
+---
+
+## 📊 Arquitectura del Proyecto
+
+Puedes explorar la estructura y el diagrama interactivo de la aplicación generado con Archify directamente en la web:
+
+[👉 Ver Diagrama Interactivo de Arquitectura en GitHub Pages](https://elmau0834x.github.io/Practicas_DMI_220859/hello_world_app/estructura_completa_hello_world_app.html)
