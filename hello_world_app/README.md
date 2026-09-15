@@ -11,3 +11,6 @@ Esta aplicacion es una practica introductoria al framework de Flutter, el fin de
 
 ![Imagen donde el contador esta en 0](/hello_world_app/img/plus.png)
 >Aqui se muestra la pantalla con el contador en numeros positivos
+
+### 📊 Diagrama Interactivo de Arquitectura
+[👉 Haz clic aquí para ver el diagrama en GitHub Pages](https://elmau0834x.github.io/Practicas_DMI_220859/hello_world_app/estructura_completa_hello_world_app.html)
