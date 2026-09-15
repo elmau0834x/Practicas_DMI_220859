@@ -14,10 +14,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: true,
         colorSchemeSeed: const Color.fromARGB(255, 240, 236, 43),
+        fontFamily: 'Minecraft', // <-- ¡Agregando esta línea se aplica la fuente a toda la app!
       ),
       home: const CounterFunctionsScreen()
     );
   }
-
 }
