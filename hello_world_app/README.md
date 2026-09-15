@@ -1,17 +1,13 @@
 # hello_world_app
 
-A new Flutter project.
+Esta aplicacion es una practica introductoria al framework de Flutter, el fin de l apractica es conocer lo fundamental en flutter, conocimos los widgets, Stateless y Statefull y el resultado de ello es una app movil de un contador que permite sumar y restar y reiniciar, ademas de la particularidad de tener numero negativos
 
-## Getting Started
+## Evidencia fotografica
+![Imagen donde el contador esta en 0](/hello_world_app/img/Base.png)
+>Aqui se muestra la pantalla con el contador reiniciado y lo muestra en 0
 
-This project is a starting point for a Flutter application.
+![Imagen donde el contador esta en 0](/hello_world_app/img/minus.png)
+>Aqui se muestra la pantalla con el contador en numeros negativos
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Imagen donde el contador esta en 0](/hello_world_app/img/plus.png)
+>Aqui se muestra la pantalla con el contador en numeros positivos

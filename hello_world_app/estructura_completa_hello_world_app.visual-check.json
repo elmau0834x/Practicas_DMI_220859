@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "visual-check",
+  "evidenceKind": "automated-browser",
+  "status": "skipped",
+  "visualReview": "pending",
+  "artifact": {
+    "path": "C:\\Users\\elmau\\OneDrive\\Documentos\\Trabajos UTXJ\\Marco\\MiAppFlutter\\Practicas_DMI_220859\\hello_world_app\\estructura_completa_hello_world_app.html",
+    "sha256": "8e8d07b59a9d17478fdf355b3e4a1c4111f531fd8581afb2f9ed7ed67ccfc93f",
+    "bytes": 812677
+  },
+  "state": {
+    "detail": "read",
+    "motion": "still"
+  },
+  "chrome": {
+    "status": "unavailable",
+    "executable": null
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/chrome-unavailable",
+      "severity": "warning",
+      "message": "Chrome or Chromium is unavailable. Set ARCHIFY_CHROME to its executable path.",
+      "subject": {
+        "artifact": "C:\\Users\\elmau\\OneDrive\\Documentos\\Trabajos UTXJ\\Marco\\MiAppFlutter\\Practicas_DMI_220859\\hello_world_app\\estructura_completa_hello_world_app.html"
+      },
+      "evidence": {
+        "executable": null
+      },
+      "supportedFixes": [
+        "set ARCHIFY_CHROME to a Chrome or Chromium executable and rerun visual-check"
+      ]
+    }
+  ],
+  "containment": {
+    "status": "skipped",
+    "viewports": []
+  },
+  "readability": {
+    "status": "skipped",
+    "minimumProjectedNodeTextPx": 6,
+    "viewports": []
+  },
+  "viewerChrome": {
+    "status": "skipped",
+    "viewports": []
+  },
+  "captures": {
+    "status": "skipped",
+    "screenshots": [],
+    "contactSheet": null
+  },
+  "sidecars": {
+    "receipt": "estructura_completa_hello_world_app.visual-check.json",
+    "contactSheet": "estructura_completa_hello_world_app.visual-check.html"
+  },
+  "error": "Chrome or Chromium is unavailable. Set ARCHIFY_CHROME to its executable path."
+}

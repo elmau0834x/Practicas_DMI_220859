@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Estructura completa de hello_world_app",
+    "quality_profile": "showcase",
+    "viewBox": [1220, 900],
+    "views": [
+      {"id": "project", "label": "Raíz y configuración", "focus": ["project", "pubspec", "analysis", "readme"], "note": "Archivos que definen el paquete, dependencias, reglas de análisis y documentación."},
+      {"id": "dart", "label": "Aplicación Dart", "focus": ["project", "lib", "screens", "tests"], "note": "El código de la app vive en lib; las pruebas de widgets en test."},
+      {"id": "platforms", "label": "Plataformas", "focus": ["platforms", "android", "ios", "web", "desktop"], "note": "Android, iOS, web y escritorio aportan runners, manifiestos y recursos nativos."}
+    ]
+  },
+  "components": [
+    {"id": "project", "type": "cloud", "label": "hello_world_app/", "sublabel": "raíz del proyecto Flutter", "pos": [500, 55], "size": [230, 72]},
+    {"id": "pubspec", "type": "database", "label": "Manifiestos y tooling", "sublabel": "pubspec.yaml, lock, .metadata, .gitignore", "pos": [55, 225], "size": [225, 68]},
+    {"id": "analysis", "type": "security", "label": "analysis_options.yaml", "sublabel": "reglas de flutter_lints", "pos": [290, 225], "size": [195, 68]},
+    {"id": "lib", "type": "frontend", "label": "lib/", "sublabel": "main.dart y código Dart", "pos": [520, 225], "size": [190, 68]},
+    {"id": "tests", "type": "backend", "label": "test/", "sublabel": "widget_test.dart", "pos": [745, 225], "size": [175, 68]},
+    {"id": "readme", "type": "external", "label": "README.md e img/", "sublabel": "descripción y evidencias", "pos": [955, 225], "size": [195, 68]},
+    {"id": "screens", "type": "frontend", "label": "presentation/screens/counter/", "sublabel": "CounterScreen y CounterFunctionsScreen", "pos": [490, 400], "size": [250, 68]},
+    {"id": "platforms", "type": "backend", "label": "Hosts de plataforma", "sublabel": "runners y configuración nativa", "pos": [520, 550], "size": [220, 68]},
+    {"id": "android", "type": "cloud", "label": "android/", "sublabel": "Gradle, Kotlin, manifest y recursos", "pos": [45, 710], "size": [225, 68]},
+    {"id": "ios", "type": "cloud", "label": "ios/", "sublabel": "Xcode, Swift, plist y assets", "pos": [330, 710], "size": [225, 68]},
+    {"id": "web", "type": "cloud", "label": "web/", "sublabel": "index.html, manifest e iconos", "pos": [615, 710], "size": [225, 68]},
+    {"id": "desktop", "type": "cloud", "label": "linux/ · macos/ · windows/", "sublabel": "CMake, Xcode y runners nativos", "pos": [900, 710], "size": [235, 68]}
+  ],
+  "connections": [
+    {"id": "defines", "from": "project", "to": "pubspec", "variant": "emphasis", "fromSide": "bottom", "toSide": "top"},
+    {"id": "lint", "from": "project", "to": "analysis", "fromSide": "bottom", "toSide": "top"},
+    {"id": "contains-lib", "from": "project", "to": "lib", "variant": "emphasis", "fromSide": "bottom", "toSide": "top"},
+    {"id": "contains-test", "from": "project", "to": "tests", "fromSide": "bottom", "toSide": "top"},
+    {"id": "documents", "from": "project", "to": "readme", "fromSide": "bottom", "toSide": "top"},
+    {"id": "organizes-ui", "from": "lib", "to": "screens", "variant": "emphasis", "fromSide": "bottom", "toSide": "top"},
+    {"id": "compiles", "from": "screens", "to": "platforms", "label": "compilación Flutter", "variant": "emphasis", "fromSide": "bottom", "toSide": "top"},
+    {"id": "android-host", "from": "platforms", "to": "android", "variant": "dashed", "fromSide": "bottom", "toSide": "top"},
+    {"id": "ios-host", "from": "platforms", "to": "ios", "variant": "dashed", "fromSide": "bottom", "toSide": "top"},
+    {"id": "web-host", "from": "platforms", "to": "web", "variant": "dashed", "fromSide": "bottom", "toSide": "top"},
+    {"id": "desktop-host", "from": "platforms", "to": "desktop", "variant": "dashed", "fromSide": "bottom", "toSide": "top"}
+  ],
+  "cards": [
+    {"dot": "cyan", "title": "Paquete Flutter", "items": ["pubspec.yaml fija Dart SDK ^3.13.2 y dependencias Flutter/Cupertino; pubspec.lock fija las versiones resueltas.", "analysis_options.yaml activa flutter_lints; .metadata y .gitignore son archivos de tooling."]},
+    {"dot": "emerald", "title": "Código y calidad", "items": ["lib/main.dart inicia MaterialApp y las pantallas del contador.", "test/widget_test.dart cubre widgets; README.md describe la práctica."]},
+    {"dot": "violet", "title": "Salidas nativas", "items": ["android/ usa Gradle, Kotlin, manifests y recursos de launcher; iOS usa Xcode, Swift, plist y assets.", "web/ aporta HTML, PWA e iconos; Linux, macOS y Windows conservan runners nativos de escritorio."]}
+  ]
+}
