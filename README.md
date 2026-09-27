@@ -35,7 +35,8 @@
 | No. | Nombre | Descripción | Potenciador | Estatus |
 | :---: | :--- | :--- | :---: | :---: |
 | **1** | Metodología de Evaluación de la Materia | Transcribir en libreta y comprender la metodología y fechas de evaluación de la asignatura. | 5 | 🟢 Concluida |
-| **2** | Mi Primera Aplicación Móvil con Flutter | Codificar la app móvil en el framework de Flutter utilizando Stateless y StatefulWidget, integrando control de ramas en Git. | 25 | 🟢 Concluida |
+| **2** | [Mi Primera Aplicación Móvil con Flutter](./Practica02/hello_world_app/README.md) | Codificar la app móvil en el framework de Flutter utilizando Stateless y StatefulWidget, integrando control de ramas en Git. | 25 | 🟢 Concluida |
+| **3** | [Yes, No, Maybe — Chat con API de Respuestas Automáticas]() | El alumno creará una app de chat en Flutter que responda preguntas del usuario (mensajes que terminan en ?) utilizando la API de yesno.wtf, con una distribución de 40% Sí, 40% No y 20% Tal Vez, mostrando además el GIF correspondiente a cada respuesta. |  | 🟢 Concluida |
 
 ---
 
