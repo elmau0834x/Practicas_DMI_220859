@@ -10,7 +10,7 @@ El resultado es una aplicación de un contador interactivo que permite sumar, re
 
 | Estado Cero | Números Negativos | Números Positivos |
 | :---: | :---: | :---: |
-| ![Contador en 0](/hello_world_app/img/Base.png) | ![Contador en negativo](/hello_world_app/img/minus.png) | ![Contador en positivo](/hello_world_app/img/plus.png) |
+| ![Contador en 0](./img/Base.png) | ![Contador en negativo](./img/minus.png) | ![Contador en positivo](./img/plus.png) |
 | *Contador reiniciado en 0.* | *Contador operando en números negativos.* | *Contador incrementando en números positivos.* |
 
 ---
