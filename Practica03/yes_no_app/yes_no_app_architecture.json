@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "yes_no_app — Arquitectura Flutter",
+    "quality_profile": "showcase",
+    "viewBox": [1480, 1050],
+    "views": [
+      { "id": "message-flow", "label": "Flujo de mensajes", "focus": ["field", "provider", "helper", "api", "model", "entity", "screen", "bubbles"], "note": "Sigue el mensaje desde la entrada hasta la respuesta de Briar en el chat." },
+      { "id": "app-setup", "label": "Arranque y configuración", "focus": ["manifest", "main", "theme", "screen"], "note": "Revisa las dependencias, el punto de entrada y el tema visual." },
+      { "id": "layers", "label": "Capas", "focus": ["helper", "theme", "entity", "model", "provider", "screen", "bubbles", "field"], "note": "Explora responsabilidades por configuración, dominio, infraestructura y presentación." }
+    ]
+  },
+  "components": [
+    { "id": "manifest", "type": "backend", "label": "pubspec.yaml", "sublabel": "Dependencias · assets", "pos": [60, 90], "size": [250, 90] },
+    { "id": "main", "type": "frontend", "label": "lib/main.dart", "sublabel": "runApp · MaterialApp · ChatProvider", "pos": [350, 90], "size": [230, 90] },
+    { "id": "helper", "type": "backend", "label": "GetYesNoAnswer", "sublabel": "Dio · Random 40/40/20", "pos": [55, 360], "size": [245, 100] },
+    { "id": "theme", "type": "backend", "label": "AppTheme", "sublabel": "ColorScheme · fuentes · estilos", "pos": [60, 720], "size": [240, 100] },
+    { "id": "entity", "type": "database", "label": "Message entity", "sublabel": "text · imageUrl? · fromWho · DateTime", "pos": [900, 360], "size": [240, 100] },
+    { "id": "model", "type": "backend", "label": "YesNoModel", "sublabel": "deserializa JSON · toMessageEntity()", "pos": [610, 360], "size": [240, 100] },
+    { "id": "api", "type": "external", "label": "Dio → yesno.wtf", "sublabel": "GET /api?force=yes|no|maybe · JSON + GIF", "pos": [340, 360], "size": [240, 100] },
+    { "id": "provider", "type": "backend", "label": "ChatProvider", "sublabel": "ChangeNotifier · mensajes · scroll", "pos": [1180, 360], "size": [245, 100] },
+    { "id": "screen", "type": "frontend", "label": "ChatScreen / _ChatView", "sublabel": "AppBar de Briar · lista de mensajes", "pos": [1180, 580], "size": [245, 100] },
+    { "id": "bubbles", "type": "frontend", "label": "Burbujas de chat", "sublabel": "Wrap · HH:mm · GIF", "pos": [1180, 800], "size": [245, 100] },
+    { "id": "field", "type": "frontend", "label": "MessageFieldBox", "sublabel": "captura texto · envía al Provider", "pos": [850, 800], "size": [245, 100] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Raíz del proyecto", "wraps": ["manifest", "main"], "pad": 30 },
+    { "kind": "region", "label": "Configuración · lib/config/", "wraps": ["helper", "theme"], "pad": 26 },
+    { "kind": "region", "label": "Dominio · lib/domain/", "wraps": ["entity"], "pad": 26 },
+    { "kind": "region", "label": "Infraestructura · lib/infrastructure/", "wraps": ["model"], "pad": 26 },
+    { "kind": "region", "label": "Presentación · lib/presentation/", "wraps": ["provider", "screen", "bubbles", "field"], "pad": 26 }
+  ],
+  "connections": [
+    { "id": "setup", "from": "manifest", "to": "main", "variant": "dashed" },
+    { "id": "field-provider", "from": "field", "to": "provider", "variant": "emphasis" },
+    { "id": "helper-api", "from": "helper", "to": "api", "variant": "emphasis", "labelDy": -70 },
+    { "id": "api-model", "from": "api", "to": "model", "label": "JSON", "variant": "default", "labelDy": -70 },
+    { "id": "model-entity", "from": "model", "to": "entity", "variant": "emphasis" },
+    { "id": "entity-provider", "from": "entity", "to": "provider", "label": "Message", "variant": "default", "labelDy": -70 },
+    { "id": "provider-screen", "from": "provider", "to": "screen", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
+    { "id": "screen-bubbles", "from": "screen", "to": "bubbles", "label": "renderiza", "variant": "default", "fromSide": "bottom", "toSide": "top", "labelDy": 50 }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Recorrido de una pregunta", "items": ["MessageFieldBox entrega el texto a ChatProvider", "Solo las preguntas terminadas en ? disparan GetYesNoAnswer", "La respuesta convertida vuelve a messageList y se notifica a la vista"] },
+    { "dot": "emerald", "title": "Capas del código", "items": ["Config: cliente HTTP, probabilidad y tema", "Dominio: entidad Message independiente de la API", "Infraestructura: JSON de yesno.wtf y mapeo", "Presentación: estado, pantalla, campo y burbujas"] },
+    { "dot": "amber", "title": "Notas de implementación", "items": ["La distribución se aplica al parámetro force de yesno.wtf", "Los mensajes incluyen fecha/hora para mostrarse como HH:mm", "pubspec declara Dio, Provider e íconos; revisar assets en configuración Flutter"] }
+  ]
+}
