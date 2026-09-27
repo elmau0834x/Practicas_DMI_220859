@@ -28,4 +28,4 @@ La aplicación responde de manera automática únicamente a preguntas que termin
 
 Puedes explorar la estructura y el diagrama interactivo de la aplicación generado con Archify directamente en la web:
 
-[👉 Ver Diagrama Interactivo de Arquitectura en GitHub Pages](https://elmau0834x.github.io/Practicas_DMI_220859/yes_no_app/estructura_completa_yes_no_app.html)
+[👉 Ver Diagrama Interactivo de Arquitectura en GitHub Pages](https://elmau0834x.github.io/Practicas_DMI_220859/Practica03/yes_no_app/estructura_completa_yes_no_app.html)
