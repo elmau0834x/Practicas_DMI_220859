@@ -17,10 +17,10 @@ La aplicación responde de manera automática únicamente a preguntas que termin
 
 ## 📸 Evidencia Fotográfica
 
-| Vista del Chat | Respuesta Afirmativa (Sí) | Respuesta Negativa (No) |
-| :---: | :---: | :---: |
-| ![Chat Principal](./assets/img/chat_principal.png) | ![Respuesta Sí](./assets/img/respuesta_si.png) | ![Respuesta No](./assets/img/respuesta_no.png) |
-| *Interfaz principal del chat con marcas de hora.* | *Respuesta de la API con GIF animado (40%).* | *Respuesta de la API con GIF animado (40%).* |
+| Vista del Chat | Respuesta Afirmativa (Sí) | Respuesta Negativa (No) | Respuesta Tal Vez (Maybe) |
+| :---: | :---: | :---: | :---: |
+|![Chat Principal](./assets/img/chat_principal.png) | ![Respuesta Sí](./assets/img/respuesta_si.png) | ![Respuesta No](./assets/img/respuesta_no.png) | ![Respuesta Tal Vez](./assets/img/respuesta_talvez.png) |
+| *Interfaz principal del chat con marcas de hora.* | *Respuesta de la API con GIF animado (40%).* | *Respuesta de la API con GIF animado (40%).* | *Respuesta de la API con GIF animado (20%).* |
 
 ---
 

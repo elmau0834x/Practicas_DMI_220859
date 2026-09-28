@@ -23,10 +23,24 @@ class YesNoModel {
         "image": image,
       };
 
-  Message toMessageEntity() => Message(
-    text: answer == 'yes' ? 'Si' : 'No', 
-    fromWho: FromWho.hers,
-    imageUrl: image,
-    time: DateTime.now()
-  );
+  Message toMessageEntity() {
+    // Variable para guardar la traducción
+    String respuestaTraducida;
+
+    // Traducimos los 3 casos exactos
+    if (answer == 'yes') {
+      respuestaTraducida = 'Sí';
+    } else if (answer == 'no') {
+      respuestaTraducida = 'No';
+    } else {
+      respuestaTraducida = 'Tal vez';
+    }
+
+    return Message(
+      text: respuestaTraducida,
+      fromWho: FromWho.hers,
+      imageUrl: image,
+      time: DateTime.now() // Manteniendo la hora que configuramos
+    );
+  }
 }

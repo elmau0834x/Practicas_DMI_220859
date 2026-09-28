@@ -6,22 +6,37 @@ import 'package:yes_no_app/infrastructure/models/yes_no_model.dart';
 class GetYesNoAnswer {
   final _dio = Dio();
 
-  Future<Message> getAnswer() async {
-    // 1. Generamos un número aleatorio del 0 al 99
-    final randomNumber = Random().nextInt(100);
+  Future<Message> getAnswer(String userMessage) async {
     String forceAnswer;
+    
+    final textLower = userMessage.trim().toLowerCase();
 
-    // 2. Lógica matemática del 40%, 40%, 20%
-    if (randomNumber < 40) {
+    // 1. Buscamos los comandos
+    if (textLower.contains('?=yes')) {
       forceAnswer = 'yes';
-    } else if (randomNumber < 80) {
+    } else if (textLower.contains('?=no')) {
       forceAnswer = 'no';
-    } else {
+    } else if (textLower.contains('?=maybe')) {
       forceAnswer = 'maybe';
+    } else {
+      // 2. Sorteo normal si no hay truco
+      final randomNumber = Random().nextInt(100);
+      if (randomNumber < 40) {
+        forceAnswer = 'yes';
+      } else if (randomNumber < 80) {
+        forceAnswer = 'no';
+      } else {
+        forceAnswer = 'maybe';
+      }
     }
 
-    // 3. Modificamos la URL para forzar a la API a darnos el resultado que sorteamos
-    final response = await _dio.get('https://yesno.wtf/api?force=$forceAnswer');
+    // 3. LA MEJORA: Usar queryParameters en lugar de modificar el String de la URL
+    final response = await _dio.get(
+      'https://yesno.wtf/api',
+      queryParameters: {
+        'force': forceAnswer // Dio construirá la URL segura automáticamente
+      }
+    );
 
     final yesNoModel = YesNoModel.fromJsonMap(response.data);
 

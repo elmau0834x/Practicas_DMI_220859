@@ -14,19 +14,30 @@ class ChatProvider extends ChangeNotifier {
   Future<void> sendMessage(String text) async {
     if (text.isEmpty) return;
 
-    final newMessage = Message(text: text, fromWho: FromWho.me, time: DateTime.now());
+    // 1. Limpiamos los comandos secretos para que no aparezcan en tu burbuja visual
+    String cleanText = text
+        .replaceAll('?=yes', '')
+        .replaceAll('?=no', '')
+        .replaceAll('?=maybe', '')
+        .trim();
+
+    // Guardamos en la lista el mensaje ya limpio
+    final newMessage = Message(text: cleanText, fromWho: FromWho.me, time: DateTime.now());
     messageList.add(newMessage);
 
     notifyListeners();
     moveScrollToBottom();
 
-    if (text.endsWith("?")) {
-      herReplay();
+    // 2. Comprobamos si el mensaje limpio termina en "?"
+    if (cleanText.endsWith("?")) {
+      // 3. Le pasamos a Briar el texto ORIGINAL (que sí trae el truco oculto)
+      herReplay(text);
     }
   }
 
-  Future<void> herReplay() async{
-    final herMessage = await getYesNoAnswer.getAnswer();
+  // 4. Recibimos el parámetro 'text' aquí para solucionar el error
+  Future<void> herReplay(String text) async {
+    final herMessage = await getYesNoAnswer.getAnswer(text);
     messageList.add(herMessage);
     notifyListeners();
 
