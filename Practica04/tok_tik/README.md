@@ -1,17 +1,35 @@
 # tok_tik
 
-A new Flutter project.
+Aplicación Flutter de videos verticales con feeds **Para ti**, **Descubrir** y
+**Cerca de ti**.
 
-## Getting Started
+## Configuración estacional
 
-This project is a starting point for a Flutter application.
+La aplicación carga las fechas anuales desde `.env`. El formato es `MM-DD` y
+los intervalos incluyen ambas fechas:
 
-A few resources to get you started if this is your first Flutter project:
+```dotenv
+HALLOWEEN_START=10-01
+HALLOWEEN_END=10-31
+CHRISTMAS_START=12-01
+CHRISTMAS_END=01-06
+```
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Los feeds de ejemplo usan endpoints MP4 públicos y necesitan conexión a
+Internet. El datasource local de `assets/videos/` se conserva para usarlo como
+fuente alternativa durante el desarrollo.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Android usa un ícono de lanzamiento estático generado desde
+`assets/icons/icon_normal.png`.
+
+## Ícono estático para Android
+
+El ícono de lanzamiento se genera desde `assets/icons/icon_normal.png` con
+`flutter_launcher_icons`. Después de modificar la imagen o la configuración,
+ejecuta desde la raíz del proyecto:
+
+```powershell
+flutter clean
+flutter pub get
+dart run flutter_launcher_icons
+```

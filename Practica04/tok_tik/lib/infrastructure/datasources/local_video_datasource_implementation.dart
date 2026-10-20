@@ -4,6 +4,19 @@ import 'package:tok_tik/infrastructure/models/local_video_model.dart';
 import 'package:tok_tik/shared/data/local_video_post.dart';
 
 class LocalVideoDatasource implements VideoPostDatasource {
+  Future<List<VideoPost>> _getLocalVideos() async => videoPosts
+      .map((video) => LocalVideoModel.fromJson(video).toVideoPostEntity())
+      .toList();
+
+  @override
+  Future<List<VideoPost>> getForYouVideos() => _getLocalVideos();
+
+  @override
+  Future<List<VideoPost>> getDiscoverVideos() => _getLocalVideos();
+
+  @override
+  Future<List<VideoPost>> getNearYouVideos() => _getLocalVideos();
+
   @override
   Future<List<VideoPost>> getFavoriteVideosByUser(String userID) {
     throw UnimplementedError();
@@ -12,11 +25,6 @@ class LocalVideoDatasource implements VideoPostDatasource {
   @override
   Future<List<VideoPost>> getTrendingVideosByPage(int page) async {
     await Future.delayed(const Duration(seconds: 2));
-
-    final List<VideoPost> newVideos = videoPosts
-        .map((video) => LocalVideoModel.fromJson(video).toVideoPostEntity())
-        .toList();
-
-    return newVideos;
+    return _getLocalVideos();
   }
 }
