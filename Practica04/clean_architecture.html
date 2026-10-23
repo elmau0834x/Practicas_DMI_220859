@@ -1,0 +1,708 @@
+﻿<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#1e1e1e">
+    <title>Arquitectura TokTik</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #1e1e1e;
+            --panel: #252526;
+            --panel2: #2b2b2b;
+            --line: #414141;
+            --text: #ededed;
+            --muted: #a0a0a0;
+            --blue: #63b3ff;
+            --violet: #c59cff;
+            --green: #65d6a4;
+            --orange: #ffb86b;
+            --red: #ff7881
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(ellipse at 50% -30%, #303749 0, #1e1e1e 58%);
+            color: var(--text);
+            font: 14px/1.5 Inter, Roboto, "Segoe UI", Arial, sans-serif;
+            min-height: 100vh
+        }
+
+        header {
+            max-width: 1400px;
+            margin: auto;
+            padding: 30px 30px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px
+        }
+
+        h1 {
+            font-size: clamp(24px, 3vw, 34px);
+            letter-spacing: -.7px;
+            margin: 0
+        }
+
+        header p {
+            color: var(--muted);
+            margin: 5px 0 0
+        }
+
+        .badge {
+            border: 1px solid #474c59;
+            background: #ffffff08;
+            padding: 7px 12px;
+            border-radius: 20px;
+            color: #c8d5e7;
+            font-size: 12px;
+            white-space: nowrap
+        }
+
+        .tabs {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px 20px;
+            display: flex;
+            gap: 9px;
+            border-bottom: 1px solid #373737
+        }
+
+        .tab {
+            background: #282828;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: #bcbcbc;
+            font: inherit;
+            cursor: pointer;
+            transition: .18s
+        }
+
+        .tab:hover {
+            border-color: #777;
+            color: white
+        }
+
+        .tab[aria-selected=true] {
+            background: #323b4b;
+            border-color: #5887bc;
+            color: #e6f2ff;
+            box-shadow: inset 0 -2px #67b5ff
+        }
+
+        .content {
+            max-width: 1400px;
+            margin: auto;
+            padding: 24px 30px 36px
+        }
+
+        .diagram-panel[hidden] {
+            display: none
+        }
+
+        .intro {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 0 0 16px
+        }
+
+        .intro h2 {
+            font-size: 18px;
+            margin: 0
+        }
+
+        .intro p {
+            color: var(--muted);
+            margin: 4px 0 0
+        }
+
+        .legend {
+            display: flex;
+            gap: 14px;
+            color: #aaa;
+            font-size: 11px;
+            flex-wrap: wrap
+        }
+
+        .key {
+            display: flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 3px;
+            background: var(--c)
+        }
+
+        .stage {
+            position: relative;
+            border: 1px solid #373737;
+            border-radius: 14px;
+            background: #17181999;
+            padding: 24px;
+            overflow: auto;
+            min-height: 330px
+        }
+
+        .simple-flow {
+            display: grid;
+            grid-template-columns: minmax(180px, 1fr) 80px minmax(180px, 1fr) 80px minmax(180px, 1fr);
+            align-items: center;
+            gap: 12px;
+            max-width: 1080px;
+            margin: 70px auto
+        }
+
+        .simple-flow .node {
+            min-height: 130px
+        }
+
+        .flow-arrow {
+            height: 2px;
+            background: linear-gradient(90deg, #6786ab, #74c7ff);
+            position: relative
+        }
+
+        .flow-arrow:after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: -5px;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #8ed4ff;
+            border-top: 2px solid #8ed4ff;
+            transform: rotate(45deg)
+        }
+
+        .node {
+            --tone: var(--blue);
+            position: relative;
+            width: 100%;
+            text-align: left;
+            background: linear-gradient(145deg, #2d2d30, #252527);
+            color: var(--text);
+            border: 1px solid #45454a;
+            border-left: 3px solid var(--tone);
+            border-radius: 10px;
+            padding: 14px 15px;
+            cursor: pointer;
+            transition: transform .17s, border-color .17s, box-shadow .17s, background .17s;
+            box-shadow: 0 7px 20px #0002
+        }
+
+        .node:hover,
+        .node:focus-visible,
+        .node.active {
+            outline: none;
+            transform: translateY(-3px);
+            border-color: var(--tone);
+            box-shadow: 0 10px 28px #0005, 0 0 0 1px color-mix(in srgb, var(--tone), transparent 70%)
+        }
+
+        .node strong {
+            display: block;
+            font-size: 13px;
+            line-height: 1.4;
+            overflow-wrap: anywhere
+        }
+
+        .node span {
+            display: block;
+            color: #a1a1aa;
+            font-size: 11px;
+            margin-top: 5px
+        }
+
+        .node .tag {
+            display: inline-flex;
+            color: var(--tone);
+            background: color-mix(in srgb, var(--tone), transparent 90%);
+            border: 1px solid color-mix(in srgb, var(--tone), transparent 78%);
+            border-radius: 20px;
+            padding: 2px 7px;
+            margin: 0 0 9px;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .8px
+        }
+
+        .simple-label {
+            text-align: center;
+            color: #8f8f97;
+            font-size: 12px;
+            margin-top: -52px
+        }
+
+        .architecture {
+            min-width: 990px;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr .8fr 1.15fr;
+            gap: 26px;
+            align-items: stretch
+        }
+
+        .wires {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: visible;
+            z-index: 0
+        }
+
+        .wires path.edge {
+            fill: none;
+            stroke: #9db8d4;
+            stroke-width: 1.7;
+            opacity: .58;
+            marker-end: url(#arrow)
+        }
+
+        .wires path.edge.core {
+            stroke: #d7e9fb;
+            opacity: .78;
+            stroke-width: 2
+        }
+
+        .wires path.edge.data {
+            stroke: #edbf8b;
+            opacity: .65
+        }
+
+        .col {
+            position: relative;
+            z-index: 1;
+            border: 1px solid #414141;
+            background: #222222c9;
+            border-radius: 13px;
+            padding: 14px;
+            min-height: 390px
+        }
+
+        .col.presentation {
+            --tone: var(--blue);
+            border-top: 2px solid var(--blue)
+        }
+
+        .col.domain {
+            --tone: var(--green);
+            border-top: 2px solid var(--green)
+        }
+
+        .col.infrastructure {
+            --tone: var(--orange);
+            border-top: 2px solid var(--orange)
+        }
+
+        .colhead {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 1px 2px 17px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px
+        }
+
+        .colhead .dot {
+            background: var(--tone)
+        }
+
+        .colhead small {
+            margin-left: auto;
+            color: #85858a;
+            font-weight: 400;
+            letter-spacing: 0
+        }
+
+        .stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .group {
+            font-size: 9px;
+            color: #85858a;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            margin: 8px 2px 0
+        }
+
+        .domain .stack {
+            padding-top: 54px
+        }
+
+        .infra .stack {
+            gap: 10px
+        }
+
+        .infra .node {
+            padding: 11px 13px
+        }
+
+        .infra .node strong {
+            font-size: 12px
+        }
+
+        .infra .node span {
+            font-size: 10px
+        }
+
+        .caption {
+            font-size: 11px;
+            color: #81818a;
+            text-align: center;
+            margin: 12px 0 0
+        }
+
+        .hint {
+            text-align: center;
+            color: #8b8b91;
+            font-size: 11px;
+            padding-top: 12px
+        }
+
+        .drawer-shade {
+            position: fixed;
+            inset: 0;
+            background: #0009;
+            z-index: 5;
+            opacity: 0;
+            pointer-events: none;
+            transition: .2s
+        }
+
+        .drawer-shade.open {
+            opacity: 1;
+            pointer-events: auto
+        }
+
+        .drawer {
+            position: fixed;
+            z-index: 6;
+            right: 0;
+            top: 0;
+            height: 100dvh;
+            width: min(400px, 93vw);
+            background: #252526;
+            border-left: 1px solid #484848;
+            box-shadow: -20px 0 50px #0008;
+            padding: 25px;
+            transform: translateX(105%);
+            transition: transform .25s ease
+        }
+
+        .drawer.open {
+            transform: translateX(0)
+        }
+
+        .close {
+            float: right;
+            background: #ffffff08;
+            border: 1px solid #444;
+            border-radius: 7px;
+            color: #bbb;
+            font-size: 20px;
+            width: 34px;
+            height: 34px;
+            cursor: pointer
+        }
+
+        .layer {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.3px;
+            color: var(--blue);
+            padding-top: 8px
+        }
+
+        .drawer h2 {
+            font-size: 20px;
+            overflow-wrap: anywhere;
+            margin: 15px 42px 12px 0
+        }
+
+        .drawer .tech {
+            font-size: 12px;
+            color: #b7c9dc;
+            background: #1a1a1a;
+            border: 1px solid #393939;
+            border-radius: 7px;
+            padding: 10px;
+            overflow-wrap: anywhere
+        }
+
+        .drawer h3 {
+            font-size: 10px;
+            color: #999;
+            margin: 25px 0 7px;
+            text-transform: uppercase;
+            letter-spacing: 1px
+        }
+
+        .drawer p {
+            color: #d7d7d7;
+            font-size: 13px
+        }
+
+        .drawer .note {
+            color: #9fa8b5;
+            font-size: 11px;
+            border-top: 1px solid #3d3d3d;
+            margin-top: 22px;
+            padding-top: 13px
+        }
+
+        button:focus-visible {
+            outline: 2px solid #8cc9ff;
+            outline-offset: 2px
+        }
+
+        @media(max-width:760px) {
+            header {
+                padding: 22px 18px 16px;
+                align-items: flex-start;
+                flex-direction: column
+            }
+
+            .tabs {
+                padding: 0 18px 15px;
+                overflow: auto
+            }
+
+            .tab {
+                white-space: nowrap;
+                padding: 9px 11px;
+                font-size: 12px
+            }
+
+            .content {
+                padding: 19px 16px 28px
+            }
+
+            .intro {
+                align-items: flex-start;
+                flex-direction: column
+            }
+
+            .stage {
+                padding: 14px;
+                min-height: 0
+            }
+
+            .simple-flow {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                margin: 20px auto;
+                max-width: 420px
+            }
+
+            .simple-flow .node {
+                min-height: 0
+            }
+
+            .flow-arrow {
+                height: 42px;
+                width: 2px;
+                background: linear-gradient(180deg, #6786ab, #74c7ff)
+            }
+
+            .flow-arrow:after {
+                right: -4px;
+                top: auto;
+                bottom: 0;
+                transform: rotate(135deg)
+            }
+
+            .simple-label {
+                margin: 0 0 8px
+            }
+
+            .architecture {
+                gap: 16px
+            }
+
+            .legend {
+                gap: 10px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>Arquitectura TokTik</h1>
+            <p>Dos vistas del flujo de videos: estado local y arquitectura por capas.</p>
+        </div>
+        <div class="badge">Flutter · mapa interactivo</div>
+    </header>
+    <nav class="tabs" role="tablist" aria-label="Diagramas de arquitectura"><button class="tab" id="tab-local"
+            role="tab" aria-selected="true" aria-controls="panel-local">Diagrama 1: Provider Local</button><button
+            class="tab" id="tab-clean" role="tab" aria-selected="false" aria-controls="panel-clean">Diagrama 2:
+            Repositorios y Datasources</button></nav>
+    <main class="content">
+        <section class="diagram-panel" id="panel-local" role="tabpanel" aria-labelledby="tab-local">
+            <div class="intro">
+                <div>
+                    <h2>Provider local · acoplamiento directo</h2>
+                    <p>La presentación consume el estado y este obtiene videos de una lista estática.</p>
+                </div>
+                <div class="legend"><span class="key"><i class="dot"
+                            style="--c:var(--blue)"></i>Presentación</span><span class="key"><i class="dot"
+                            style="--c:var(--violet)"></i>Estado</span><span class="key"><i class="dot"
+                            style="--c:var(--orange)"></i>Datos locales</span></div>
+            </div>
+            <div class="stage">
+                <div class="simple-flow"><button class="node" style="--tone:var(--blue)" data-name="UI / Screens"
+                        data-layer="Presentación" data-tech="Flutter · Screens"
+                        data-desc="Las pantallas Discover, For You y Favorites presentan el feed y responden a las acciones del usuario."
+                        data-path="lib/presentation/screens/"><i class="tag">Presentación</i><strong>UI /
+                            Screens</strong><span>Pantallas y widgets de video</span></button>
+                    <div class="flow-arrow" aria-hidden="true"></div><button class="node" style="--tone:var(--violet)"
+                        data-name="LocalVideoProvider" data-layer="Gestor de estado"
+                        data-tech="Provider · ChangeNotifier"
+                        data-desc="Mantiene la lista de videos y comunica a la interfaz cambios de estado, como likes o paginación. En este flujo simplificado, conoce directamente la fuente local."
+                        data-path="lib/presentation/providers/local_video_provider.dart"><i
+                            class="tag">Estado</i><strong>LocalVideoProvider</strong><span>Gestor de
+                            estado</span></button>
+                    <div class="flow-arrow" aria-hidden="true"></div><button class="node" style="--tone:var(--orange)"
+                        data-name="local_video_post.dart" data-layer="Datos locales"
+                        data-tech="Dart · lista estática / assets"
+                        data-desc="Contiene publicaciones de video definidas en duro, con captions y referencias a assets locales. El provider accede directamente a estos datos."
+                        data-path="lib/shared/data/local_video_post.dart"><i
+                            class="tag">Datos</i><strong>local_video_post.dart</strong><span>Assets · datos en
+                            duro</span></button>
+                </div>
+                <div class="simple-label">Flujo directo de lectura y actualización de estado</div>
+            </div>
+            <div class="hint">Pasa el cursor para resaltar un nodo o selecciónalo para ver los detalles.</div>
+        </section>
+        <section class="diagram-panel" id="panel-clean" role="tabpanel" aria-labelledby="tab-clean" hidden>
+            <div class="intro">
+                <div>
+                    <h2>Clean Architecture · repositorios y datasources</h2>
+                    <p>El dominio define el contrato; la infraestructura lo implementa y reúne las fuentes.</p>
+                </div>
+                <div class="legend"><span class="key"><i class="dot"
+                            style="--c:var(--blue)"></i>Presentation</span><span class="key"><i class="dot"
+                            style="--c:var(--green)"></i>Domain</span><span class="key"><i class="dot"
+                            style="--c:var(--orange)"></i>Infrastructure</span></div>
+            </div>
+            <div class="stage">
+                <div class="architecture" id="architecture"><svg class="wires" id="wires" aria-hidden="true">
+                        <defs>
+                            <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                                <path d="M0 0L8 4L0 8z" fill="#c3d7eb" />
+                            </marker>
+                        </defs>
+                    </svg>
+                    <section class="col presentation">
+                        <div class="colhead"><i class="dot"></i>PRESENTATION</div>
+                        <div class="stack">
+                            <div class="group">Pantallas</div><button class="node" id="screens" data-name="Screens"
+                                data-layer="Presentation" data-tech="Flutter · Discover / For You / Favorites"
+                                data-desc="Las pantallas componen la experiencia de descubrimiento, feed personalizado y favoritos. Delegan la carga y las acciones a providers."
+                                data-path="lib/presentation/screens/"><strong>Screens</strong><span>Discover · For You ·
+                                    Favorites</span></button>
+                            <div class="group">Estado de presentación</div><button class="node" id="providers"
+                                data-name="Providers" data-layer="Presentation"
+                                data-tech="Provider · FeedProvider / ThemeProvider"
+                                data-desc="FeedProvider gestiona la carga y el estado del feed. ThemeProvider mantiene las preferencias visuales. El feed solicita operaciones al contrato del repositorio definido en Domain."
+                                data-path="lib/presentation/providers/"><strong>Providers</strong><span>FeedProvider ·
+                                    ThemeProvider</span></button>
+                        </div>
+                    </section>
+                    <section class="col domain">
+                        <div class="colhead"><i class="dot"></i>DOMAIN</div>
+                        <div class="stack">
+                            <div class="group">Modelo de negocio</div><button class="node" id="entity"
+                                data-name="Entity: VideoPost" data-layer="Domain" data-tech="Dart · entidad de dominio"
+                                data-desc="Representa un video con los atributos que necesita la aplicación, independiente de APIs o detalles de persistencia."
+                                data-path="lib/domain/entities/video_post.dart"><strong>Entity:
+                                    VideoPost</strong><span>Entidad de dominio</span></button>
+                            <div class="group">Puerto de salida</div><button class="node" id="contract"
+                                data-name="Contract: VideoPostRepository" data-layer="Domain"
+                                data-tech="Dart · contrato abstracto"
+                                data-desc="Define las operaciones disponibles para consultar y gestionar VideoPost. Domain declara la abstracción; la implementación concreta vive en Infrastructure."
+                                data-path="lib/domain/repositories/video_posts_repository.dart"><strong>Contract:
+                                    VideoPostRepository</strong><span>Contrato · inversión de
+                                    dependencias</span></button>
+                        </div>
+                    </section>
+                    <section class="col infrastructure">
+                        <div class="colhead"><i class="dot"></i>INFRASTRUCTURE</div>
+                        <div class="stack">
+                            <div class="group">Adaptador concreto</div><button class="node" id="implementation"
+                                data-name="VideoPostsRepositoryImpl" data-layer="Infrastructure"
+                                data-tech="Dart · implementación del repositorio"
+                                data-desc="Implementa el contrato del dominio, adapta los resultados de las fuentes externas y locales a entidades VideoPost."
+                                data-path="lib/infrastructure/repositories/video_posts_repository_impl.dart"><strong>Implementation:
+                                    VideoPostsRepositoryImpl</strong><span>Implementa
+                                    VideoPostRepository</span></button>
+                            <div class="group">Fuentes de datos</div><button class="node" id="youtube"
+                                data-name="YouTube API" data-layer="Infrastructure · Datasource 1"
+                                data-tech="YouTube API + youtube_explode_dart"
+                                data-desc="Integra videos de YouTube y la extracción de información o streams mediante youtube_explode_dart. Sirve como una fuente remota de videos para el repositorio."
+                                data-path="Datasource · YouTube"><strong>Datasource 1: YouTube
+                                    API</strong><span>youtube_explode_dart</span></button><button class="node"
+                                id="pixabay" data-name="Pixabay Video API" data-layer="Infrastructure · Datasource 2"
+                                data-tech="Pixabay Video API · REST"
+                                data-desc="Aporta resultados de video de stock. El datasource transforma la respuesta de Pixabay al modelo que utiliza el repositorio."
+                                data-path="Datasource · Pixabay"><strong>Datasource 2: Pixabay Video
+                                    API</strong><span>API de videos</span></button><button class="node" id="tmdb"
+                                data-name="TMDB API" data-layer="Infrastructure · Datasource 3"
+                                data-tech="The Movie Database API"
+                                data-desc="Permite consultar películas y metadatos asociados. El datasource adapta sus respuestas a publicaciones de video para la aplicación."
+                                data-path="Datasource · TMDB"><strong>Datasource 3: TMDB API</strong><span>Películas ·
+                                    metadatos</span></button><button class="node" id="storage" data-name="Local Storage"
+                                data-layer="Infrastructure · Datasource 4"
+                                data-tech="shared_preferences · almacenamiento clave/valor"
+                                data-desc="Persiste preferencias sencillas como likes sin requerir una base de datos SQLite, cumpliendo la regla de cero bases de datos SQLite."
+                                data-path="Datasource · shared_preferences"><strong>Datasource 4: Local
+                                    Storage</strong><span>shared_preferences</span></button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="hint">Selecciona cualquier nodo para abrir su ficha. Las flechas muestran las dependencias.
+            </div>
+        </section>
+    </main>
+    <div class="drawer-shade" id="shade"></div>
+    <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dName"><button class="close"
+            id="close" aria-label="Cerrar panel">×</button>
+        <div class="layer" id="dLayer"></div>
+        <h2 id="dName"></h2>
+        <div class="tech" id="dTech"></div>
+        <h3>Justificación y responsabilidad</h3>
+        <p id="dDesc"></p>
+        <h3>Referencia</h3>
+        <div class="tech" id="dPath"></div>
+        <div class="note">TokTik · Arquitectura de aplicación</div>
+    </aside>
+    <script>
+        const tabs = [...document.querySelectorAll('.tab')], panels = [...document.querySelectorAll('.diagram-panel')]; function activate(tab) { tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab))); panels.forEach(p => p.hidden = p.id !== tab.getAttribute('aria-controls')); requestAnimationFrame(draw) } tabs.forEach((t, i) => { t.addEventListener('click', () => activate(t)); t.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; activate(n); n.focus() } }) });
+        const drawer = document.getElementById('drawer'), shade = document.getElementById('shade'); function openNode(n) { document.querySelectorAll('.node.active').forEach(x => x.classList.remove('active')); n.classList.add('active'); document.getElementById('dName').textContent = n.dataset.name; document.getElementById('dLayer').textContent = n.dataset.layer; document.getElementById('dLayer').style.color = getComputedStyle(n).getPropertyValue('--tone'); document.getElementById('dTech').textContent = n.dataset.tech; document.getElementById('dDesc').textContent = n.dataset.desc; document.getElementById('dPath').textContent = n.dataset.path; drawer.classList.add('open'); shade.classList.add('open'); document.getElementById('close').focus() } function closeDrawer() { drawer.classList.remove('open'); shade.classList.remove('open'); document.querySelectorAll('.node.active').forEach(x => x.classList.remove('active')) } document.querySelectorAll('.node').forEach(n => n.addEventListener('click', () => openNode(n))); document.getElementById('close').addEventListener('click', closeDrawer); shade.addEventListener('click', closeDrawer); document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer() });
+        const root = document.getElementById('architecture'), svg = document.getElementById('wires'), links = [['providers', 'contract', 'core'], ['contract', 'implementation', 'core'], ['implementation', 'youtube', 'data'], ['implementation', 'pixabay', 'data'], ['implementation', 'tmdb', 'data'], ['implementation', 'storage', 'data']]; function draw() { if (!root || !svg || document.getElementById('panel-clean').hidden) return; const box = root.getBoundingClientRect(); svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`); svg.style.height = box.height + 'px'; svg.querySelectorAll('.edge').forEach(e => e.remove()); for (const [a, b, type] of links) { const A = document.getElementById(a).getBoundingClientRect(), B = document.getElementById(b).getBoundingClientRect(); const x1 = A.right - box.left, y1 = A.top + A.height / 2 - box.top, x2 = B.left - box.left, y2 = B.top + B.height / 2 - box.top; const bend = Math.max(24, (x2 - x1) * .44); const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', `M${x1} ${y1} C${x1 + bend} ${y1},${x2 - bend} ${y2},${x2} ${y2}`); p.setAttribute('class', 'edge ' + type); svg.appendChild(p) } } new ResizeObserver(draw).observe(root); window.addEventListener('resize', draw); window.addEventListener('load', draw); requestAnimationFrame(draw);
+    </script>
+</body>
+
+</html>

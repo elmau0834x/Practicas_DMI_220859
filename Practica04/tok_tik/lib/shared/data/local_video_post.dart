@@ -14,14 +14,14 @@ List<Map<String, dynamic>> videoPosts = [
   {
     'name': 'Que borroso veo todo!',
     'videoUrl': 'assets/videos/3.mp4',
-    'likes': 21564320,
-    'views': 123563,
+    'likes': 5,
+    'views': 20,
   },
   {
     'name': '¿Esto es trigo? que interesante',
     'videoUrl': 'assets/videos/4.mp4',
-    'likes': 320,
-    'views': 2300,
+    'likes': 0,
+    'views': 5,
   },
   {
     'name': 'El COVID no me afecta',
@@ -50,8 +50,8 @@ List<Map<String, dynamic>> videoPosts = [
   {
     'name': '5 inutidatos de hollow knight',
     'videoUrl': 'assets/videos/9.mp4',
-    'likes': 3200,
-    'views': 4030,
+    'likes': 100,
+    'views': 133,
   },
   {
     'name':'8 noticias randoms de hoy',

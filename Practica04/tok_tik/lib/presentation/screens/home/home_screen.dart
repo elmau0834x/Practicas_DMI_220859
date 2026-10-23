@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tok_tik/presentation/providers/theme_provider.dart';
 import 'package:tok_tik/presentation/screens/discover/discover_screen.dart';
+import 'package:tok_tik/presentation/screens/favorites/favorites_screen.dart';
 import 'package:tok_tik/presentation/screens/for_you/for_you_screen.dart';
-import 'package:tok_tik/presentation/screens/near_you/near_you_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,13 +13,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final PageController _pageController = PageController();
   int _selectedIndex = 0;
 
-  static const _screens = [
-    ForYouScreen(),
-    DiscoverScreen(),
-    NearYouScreen(),
-  ];
+  static const _screens = [DiscoverScreen(), ForYouScreen(), FavoritesScreen()];
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,32 +54,38 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             child: IconButton(
-              tooltip: 'Tema actual: ${themeProvider.seasonName} (Toca para cambiar)',
-              icon: Icon(
-                themeProvider.seasonIcon,
-                color: primaryColor,
-              ),
+              tooltip:
+                  'Tema actual: ${themeProvider.seasonName} (Toca para cambiar)',
+              icon: Icon(themeProvider.seasonIcon, color: primaryColor),
               onPressed: () => themeProvider.cycleTheme(),
             ),
           ),
         ],
       ),
-      body: _screens[_selectedIndex],
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) => setState(() => _selectedIndex = index),
+        children: _screens,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
+        onTap: (index) => _pageController.animateToPage(
+          index,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeInOut,
+        ),
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Para ti',
-          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.explore),
             label: 'Descubrir',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: 'Cerca de ti',
+            icon: Icon(Icons.home_filled),
+            label: 'Para ti',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favoritos',
           ),
         ],
       ),

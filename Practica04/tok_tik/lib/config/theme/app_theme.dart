@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
-enum AppSeason { normal, halloween, christmas }
+enum AppSeason { normal, halloween, christmas, valentine }
 
 class AppTheme {
   AppSeason seasonAt(DateTime date) {
+    if (_isInSeason(
+      date,
+      const String.fromEnvironment('VALENTINE_START', defaultValue: '02-01'),
+      const String.fromEnvironment('VALENTINE_END', defaultValue: '02-14'),
+    )) {
+      return AppSeason.valentine;
+    }
+
     if (_isInSeason(
       date,
       const String.fromEnvironment('HALLOWEEN_START', defaultValue: '10-01'),
@@ -26,9 +34,9 @@ class AppTheme {
   ThemeData getThemeForSeason(AppSeason season) {
     switch (season) {
       case AppSeason.halloween:
-        // Halloween: Naranja vibrante, Morado místico y Negro profundo
         return ThemeData(
           useMaterial3: true,
+          fontFamily: 'monospace',
           brightness: Brightness.dark,
           scaffoldBackgroundColor: Colors.black,
           colorScheme: ColorScheme.fromSeed(
@@ -51,9 +59,9 @@ class AppTheme {
         );
 
       case AppSeason.christmas:
-        // Navidad: Rojo festivo, Verde pino y Blanco
         return ThemeData(
           useMaterial3: true,
+          fontFamily: 'serif',
           brightness: Brightness.dark,
           scaffoldBackgroundColor: Colors.black,
           colorScheme: ColorScheme.fromSeed(
@@ -76,10 +84,35 @@ class AppTheme {
           ),
         );
 
-      case AppSeason.normal:
-        // Normal: Estándar oscuro elegante con acentos cyan/teal
+      case AppSeason.valentine:
         return ThemeData(
           useMaterial3: true,
+          fontFamily: 'cursive',
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: Colors.black,
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFFE91E63),
+            primary: const Color(0xFFFF4081),
+            secondary: const Color(0xFFAD1457),
+            surface: const Color(0xFF29121D),
+            brightness: Brightness.dark,
+          ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.transparent,
+            foregroundColor: Color(0xFFFF80AB),
+            elevation: 0,
+          ),
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Colors.black,
+            selectedItemColor: Color(0xFFFF80AB),
+            unselectedItemColor: Colors.grey,
+          ),
+        );
+
+      case AppSeason.normal:
+        return ThemeData(
+          useMaterial3: true,
+          fontFamily: 'Roboto',
           brightness: Brightness.dark,
           scaffoldBackgroundColor: Colors.black,
           colorScheme: ColorScheme.fromSeed(
@@ -101,6 +134,24 @@ class AppTheme {
           ),
         );
     }
+  }
+
+  String getSoundAssetForSeason(AppSeason season) {
+    return switch (season) {
+      AppSeason.normal => 'audios/base_sound.mp3',
+      AppSeason.halloween => 'audios/halloween_sound.mp3',
+      AppSeason.christmas => 'audios/christmas_sound.mp3',
+      AppSeason.valentine => 'audios/valentine_sound.wav',
+    };
+  }
+
+  String getIconAssetForSeason(AppSeason season) {
+    return switch (season) {
+      AppSeason.normal => 'assets/icons/icon_normal.png',
+      AppSeason.halloween => 'assets/icons/icon_halloween.png',
+      AppSeason.christmas => 'assets/icons/icon_christmas.png',
+      AppSeason.valentine => 'assets/icons/icon_valentine.png',
+    };
   }
 
   ThemeData getTheme({DateTime? date}) {

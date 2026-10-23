@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tok_tik/domain/entities/video_post.dart';
 import 'package:tok_tik/presentation/widgets/shared/video_buttons.dart';
+import 'package:tok_tik/presentation/widgets/shared/expandable_caption.dart';
 import 'package:tok_tik/presentation/widgets/video/video_background.dart';
 import 'package:video_player/video_player.dart';
 
@@ -96,9 +97,7 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
         }
 
         if (snapshot.connectionState != ConnectionState.done) {
-          return const Center(
-            child: CircularProgressIndicator(strokeWidth: 2),
-          );
+          return const Center(child: CircularProgressIndicator(strokeWidth: 2));
         }
 
         final isPaused = !controller.value.isPlaying;
@@ -140,16 +139,18 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
                 Positioned(
                   bottom: 40,
                   left: 20,
-                  child: _VideoCaption(caption: widget.actualCaption),
+                  child: ExpandableCaption(caption: widget.actualCaption),
                 ),
 
                 // Columna de botones alineada a la derecha inferior
                 Positioned(
                   bottom: 40,
                   right: 20,
-                  child: widget.buttons ??
+                  child:
+                      widget.buttons ??
                       VideoButtons(
-                        video: widget.video ??
+                        video:
+                            widget.video ??
                             VideoPost(
                               caption: widget.actualCaption,
                               videoUrl: widget.actualVideoUrl,
@@ -165,31 +166,6 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
           ),
         );
       },
-    );
-  }
-}
-
-class _VideoCaption extends StatelessWidget {
-  final String caption;
-
-  const _VideoCaption({required this.caption});
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final titleStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.w600,
-        );
-
-    return SizedBox(
-      width: size.width * 0.6,
-      child: Text(
-        caption,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: titleStyle,
-      ),
     );
   }
 }

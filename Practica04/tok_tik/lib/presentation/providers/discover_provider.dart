@@ -5,14 +5,19 @@ import 'package:tok_tik/presentation/providers/video_feed_provider.dart';
 
 class DiscoverProvider extends VideoFeedProvider {
   DiscoverProvider({
+    super.sourceProvider,
+    required super.favoritesRepository,
+    super.onFavoritesChanged,
     VideoPostsRepository? repository,
     VideoPostsRepository? videosRepositoy,
   }) : super(
-          loadFeed: (repository ??
-                  videosRepositoy ??
-                  MovieVideoRepositoryImpl(
-                    datasource: MovieVideoDatasource(),
-                  ))
-              .getDiscoverVideos,
-        );
+         loadFeed:
+             sourceProvider?.getDiscoverVideos ??
+             (repository ??
+                     videosRepositoy ??
+                     MovieVideoRepositoryImpl(
+                       datasource: MovieVideoDatasource(),
+                     ))
+                 .getDiscoverVideos,
+       );
 }

@@ -4,12 +4,17 @@ import 'package:tok_tik/infrastructure/repositories/video_posts_repository_impl.
 import 'package:tok_tik/presentation/providers/video_feed_provider.dart';
 
 class NearYouProvider extends VideoFeedProvider {
-  NearYouProvider({VideoPostsRepository? repository})
-      : super(
-          loadFeed: (repository ??
-                  VideoPostsRepositoryImpl(
-                    videosDatasource: PixabayVideoDatasource(),
-                  ))
-              .getNearYouVideos,
-        );
+  NearYouProvider({
+    super.sourceProvider,
+    required super.favoritesRepository,
+    VideoPostsRepository? repository,
+  }) : super(
+         loadFeed:
+             sourceProvider?.getNearYouVideos ??
+             (repository ??
+                     VideoPostsRepositoryImpl(
+                       videosDatasource: PixabayVideoDatasource(),
+                     ))
+                 .getNearYouVideos,
+       );
 }

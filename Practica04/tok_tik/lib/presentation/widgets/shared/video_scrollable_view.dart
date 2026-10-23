@@ -25,6 +25,7 @@ class VideoScrollableView extends StatelessWidget {
 
         return SizedBox.expand(
           child: FullScreenPlayer(
+            key: ValueKey(videoPost.id),
             video: videoPost,
             onLikeToggle: onLikeToggle != null
                 ? () => onLikeToggle!(videoPost)
