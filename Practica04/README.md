@@ -66,11 +66,11 @@ Cumpliendo con la documentación requerida, se han generado 2 diagramas de arqui
 
 ### Diagrama 1: Arquitectura con Provider Local
 Muestra el flujo inicial con acoplamiento directo entre el manejador de estado (Provider) y los *assets* locales estáticos de la aplicación.
-- 🌐 **[Ver Diagrama de Provider Local en Vivo]([AQUÍ_TU_ENLACE_GITHUB_PAGES])**
+- 🌐 **[Ver Diagrama de Provider Local en Vivo]([https://elmau0834x.github.io/Practicas_DMI_220859/Practica04/clean_architecture.html])**
 
 ### Diagrama 2: Provider a través de Repositorio y 3 Datasources
 Ilustra el cumplimiento de *Clean Architecture* con la inversión de dependencias: cómo los Providers delegan la petición al Contrato (Repository) y este orquesta las consultas hacia YouTube, Pixabay, TMDB y Local Storage.
-- 🌐 **[Ver Diagrama de Múltiples Datasources en Vivo]([AQUÍ_TU_ENLACE_GITHUB_PAGES])**
+- 🌐 **[Ver Diagrama de Múltiples Datasources en Vivo]([https://elmau0834x.github.io/Practicas_DMI_220859/Practica04/clean_architecture.html])**
 
 ---
 
@@ -80,8 +80,8 @@ Para ejecutar este proyecto de forma local, es indispensable configurar las llav
 
 1. Clona el repositorio e instala dependencias:
    ```bash
-   git clone https://github.com/elmau0834x/tok_tik.git
-   cd tok_tik
+   git clone https://github.com/elmau0834x/Practicas_DMI_220859.git
+   cd Practica04/tok_tik
    flutter pub get
    ```
 
