@@ -37,6 +37,6 @@
 | **1** | Metodología de Evaluación de la Materia | Transcribir en libreta y comprender la metodología y fechas de evaluación de la asignatura. | 5 | 🟢 Concluida |
 | **2** | [Mi Primera Aplicación Móvil con Flutter](./Practica02/hello_world_app/README.md) | Codificar la app móvil en el framework de Flutter utilizando Stateless y StatefulWidget, integrando control de ramas en Git. | 25 | 🟢 Concluida |
 | **3** | [Yes, No, Maybe — Chat con API de Respuestas Automáticas](./Practica03/yes_no_app/README.md) | El alumno creará una app de chat en Flutter que responda preguntas del usuario (mensajes que terminan en ?) utilizando la API de yesno.wtf, con una distribución de 40% Sí, 40% No y 20% Tal Vez, mostrando además el GIF correspondiente a cada respuesta. |  | 🟢 Concluida |
-| **4** | [TokTik app](./Practica04/tok_tik/README.md) | El alumno creara una app de reproduccion de videos verticales con el uso de providers y tematizacion temporal a Halloween y Navidad | ?? | En curso |
+| **4** | [TokTik app](./Practica04/README.md) | El alumno creara una app de reproduccion de videos verticales con el uso de providers y tematizacion temporal a Halloween y Navidad | ?? | En curso |
 | **Examen** | [ Manual de instalacion ](./Documentation/Manual_Flutter_COWSMO.docx) | Manual de instalacion de Flutter en PC Windows | ? | 🟢 Concluida |
 ---
