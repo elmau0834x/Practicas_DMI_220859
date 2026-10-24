@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 enum AppSeason { normal, halloween, christmas, valentine }
 
@@ -6,24 +7,24 @@ class AppTheme {
   AppSeason seasonAt(DateTime date) {
     if (_isInSeason(
       date,
-      const String.fromEnvironment('VALENTINE_START', defaultValue: '02-01'),
-      const String.fromEnvironment('VALENTINE_END', defaultValue: '02-14'),
+      _seasonDate('VALENTINE_START', '02-01'),
+      _seasonDate('VALENTINE_END', '02-14'),
     )) {
       return AppSeason.valentine;
     }
 
     if (_isInSeason(
       date,
-      const String.fromEnvironment('HALLOWEEN_START', defaultValue: '10-01'),
-      const String.fromEnvironment('HALLOWEEN_END', defaultValue: '11-01'),
+      _seasonDate('HALLOWEEN_START', '10-01'),
+      _seasonDate('HALLOWEEN_END', '11-01'),
     )) {
       return AppSeason.halloween;
     }
 
     if (_isInSeason(
       date,
-      const String.fromEnvironment('CHRISTMAS_START', defaultValue: '12-01'),
-      const String.fromEnvironment('CHRISTMAS_END', defaultValue: '12-31'),
+      _seasonDate('CHRISTMAS_START', '12-01'),
+      _seasonDate('CHRISTMAS_END', '12-31'),
     )) {
       return AppSeason.christmas;
     }
@@ -160,18 +161,31 @@ class AppTheme {
   }
 
   bool _isInSeason(DateTime date, String startValue, String endValue) {
-    final start = _monthDay(startValue, date.year);
-    final end = _monthDay(endValue, date.year);
+    final currentYear = date.year;
+    final startParts = _monthDayParts(startValue, currentYear);
+    final endParts = _monthDayParts(endValue, currentYear);
+    final crossesYear = endParts.$1 < startParts.$1;
     final currentDay = DateTime(date.year, date.month, date.day);
 
-    if (start.isAfter(end)) {
-      return !currentDay.isBefore(start) || !currentDay.isAfter(end);
+    bool isWithinSeasonStartingIn(int year) {
+      final start = DateTime(year, startParts.$1, startParts.$2);
+      final end = DateTime(
+        year + (crossesYear ? 1 : 0),
+        endParts.$1,
+        endParts.$2,
+      );
+      final isAtOrAfterStart =
+          currentDay.isAfter(start) || currentDay.isAtSameMomentAs(start);
+      final isAtOrBeforeEnd =
+          currentDay.isBefore(end) || currentDay.isAtSameMomentAs(end);
+      return isAtOrAfterStart && isAtOrBeforeEnd;
     }
 
-    return !currentDay.isBefore(start) && !currentDay.isAfter(end);
+    return isWithinSeasonStartingIn(currentYear) ||
+        (crossesYear && isWithinSeasonStartingIn(currentYear - 1));
   }
 
-  DateTime _monthDay(String value, int year) {
+  (int, int) _monthDayParts(String value, int year) {
     final match = RegExp(r'^(\d{2})-(\d{2})$').firstMatch(value);
     if (match == null) {
       throw FormatException('Expected a season date in MM-DD format: $value');
@@ -179,10 +193,16 @@ class AppTheme {
 
     final month = int.parse(match.group(1)!);
     final day = int.parse(match.group(2)!);
-    final parsed = DateTime(year, month, day);
+    final parsed = DateTime.parse('$year-$value');
     if (parsed.month != month || parsed.day != day) {
       throw FormatException('Invalid season date: $value');
     }
-    return parsed;
+    return (month, day);
+  }
+
+  String _seasonDate(String key, String defaultValue) {
+    return dotenv.isInitialized
+        ? dotenv.env[key] ?? defaultValue
+        : defaultValue;
   }
 }

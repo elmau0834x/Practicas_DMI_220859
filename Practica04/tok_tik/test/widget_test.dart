@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tok_tik/config/theme/app_theme.dart';
@@ -9,6 +10,9 @@ import 'package:tok_tik/presentation/widgets/shared/video_buttons.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  const iconChannel = MethodChannel('com.toktik.app/icon');
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      .setMockMethodCallHandler(iconChannel, (_) async => null);
 
   setUp(() {
     SharedPreferences.setMockInitialValues({});

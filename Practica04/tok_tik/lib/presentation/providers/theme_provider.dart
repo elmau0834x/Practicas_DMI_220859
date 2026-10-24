@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tok_tik/config/helpers/dynamic_icon_helper.dart';
 import 'package:tok_tik/config/theme/app_theme.dart';
 
 class ThemeProvider extends ChangeNotifier {
@@ -27,14 +28,16 @@ class ThemeProvider extends ChangeNotifier {
     final savedSeason = preferences.getString(_seasonPreferenceKey);
     for (final season in AppSeason.values) {
       if (season.name == savedSeason) {
-        return ThemeProvider._withSeason(season, playSound);
+        final provider = ThemeProvider._withSeason(season, playSound);
+        await DynamicIconHelper.changeIcon(season.name);
+        return provider;
       }
     }
 
-    return ThemeProvider._withSeason(
-      AppTheme().seasonAt(DateTime.now()),
-      playSound,
-    );
+    final season = AppTheme().seasonAt(DateTime.now());
+    final provider = ThemeProvider._withSeason(season, playSound);
+    await DynamicIconHelper.changeIcon(season.name);
+    return provider;
   }
 
   AppSeason get season => _season;
@@ -69,25 +72,28 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   /// Cambia al siguiente tema cíclicamente y conserva la selección del usuario.
-  Future<void> cycleTheme() async {
+  Future<void> cycleTheme({Duration iconChangeDelay = Duration.zero}) async {
     switch (_season) {
       case AppSeason.normal:
-        await setSeason(AppSeason.halloween);
+        await setSeason(AppSeason.halloween, iconChangeDelay: iconChangeDelay);
         break;
       case AppSeason.halloween:
-        await setSeason(AppSeason.christmas);
+        await setSeason(AppSeason.christmas, iconChangeDelay: iconChangeDelay);
         break;
       case AppSeason.christmas:
-        await setSeason(AppSeason.valentine);
+        await setSeason(AppSeason.valentine, iconChangeDelay: iconChangeDelay);
         break;
       case AppSeason.valentine:
-        await setSeason(AppSeason.normal);
+        await setSeason(AppSeason.normal, iconChangeDelay: iconChangeDelay);
         break;
     }
   }
 
   /// Establece el tema estacional actual.
-  Future<void> setSeason(AppSeason newSeason) async {
+  Future<void> setSeason(
+    AppSeason newSeason, {
+    Duration iconChangeDelay = Duration.zero,
+  }) async {
     final preferences = await SharedPreferences.getInstance();
     final saved = await preferences.setString(
       _seasonPreferenceKey,
@@ -97,10 +103,17 @@ class ThemeProvider extends ChangeNotifier {
       throw StateError('No se pudo guardar el tema seleccionado.');
     }
 
-    if (_season == newSeason) return;
-    _season = newSeason;
-    notifyListeners();
-    await _playSeasonSound();
+    final changed = _season != newSeason;
+    if (changed) {
+      _season = newSeason;
+      notifyListeners();
+    }
+    final soundPlayback = changed ? _playSeasonSound() : Future<void>.value();
+    if (changed && iconChangeDelay > Duration.zero) {
+      await Future<void>.delayed(iconChangeDelay);
+    }
+    await DynamicIconHelper.changeIcon(newSeason.name);
+    await soundPlayback;
   }
 
   Future<void> _playSeasonSound() async {

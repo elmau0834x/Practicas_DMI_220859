@@ -18,6 +18,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   static const _screens = [DiscoverScreen(), ForYouScreen(), FavoritesScreen()];
 
+  Future<void> _changeSeason(ThemeProvider themeProvider) async {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Aplicando tema estacional. La aplicación se reiniciará para actualizar el ícono del sistema.',
+          ),
+          duration: Duration(seconds: 4),
+        ),
+      );
+    await themeProvider.cycleTheme(iconChangeDelay: const Duration(seconds: 3));
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -57,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
               tooltip:
                   'Tema actual: ${themeProvider.seasonName} (Toca para cambiar)',
               icon: Icon(themeProvider.seasonIcon, color: primaryColor),
-              onPressed: () => themeProvider.cycleTheme(),
+              onPressed: () => _changeSeason(themeProvider),
             ),
           ),
         ],

@@ -9,7 +9,7 @@
 <div align="center">
 
 [![Appetize.io Demo](https://img.shields.io/badge/Appetize.io-Probar%20en%20el%20Navegador-FF6B6B?style=for-the-badge&logo=android&logoColor=white)]([AQUÍ_TU_ENLACE_APPETIZE])
-[![Diagrama de Arquitectura](https://img.shields.io/badge/Diagramas-Clean%20Architecture-02569B?style=for-the-badge)]([AQUÍ_TU_ENLACE_GITHUB_PAGES])
+[![Diagrama de Arquitectura](https://img.shields.io/badge/Diagramas-Clean%20Architecture-02569B?style=for-the-badge)](https://elmau0834x.github.io/Practicas_DMI_220859/Practica04/clean_architecture.html)
 
 </div>
 
@@ -108,8 +108,12 @@ Para ejecutar este proyecto de forma local, es indispensable configurar las llav
 
 ### 1. Splash Screen y Temas Estacionales
 Demostración de la pantalla de carga animada, reproducción del audio reactivo y el cambio manual persistente entre las diferentes temporadas (Halloween, Navidad, San Valentín).
-*▶️ **[Ver Demostración de Temas y Splash Screen]([AQUÍ_TU_ENLACE_YOUTUBE_O_DRIVE])***
+
+ **[Ver Carpeta de Videos en Drive](https://drive.google.com/drive/folders/1_mWed9QfL1CgWO-rY80KTlApPl-uCNg3?usp=sharing)**
+
+
 
 ### 2. Navegación, APIs, Favoritos y UI Expandible
 Demostración del consumo asíncrono de YouTube, Pixabay y TMDB, navegación lateral entre secciones (Swipe), almacenamiento de likes, mute global y despliegue del texto extendido "(... más)".
-*▶️ **[Ver Demostración de Navegación y Funcionalidad Core]([AQUÍ_TU_ENLACE_YOUTUBE_O_DRIVE])***
+
+ **[Ver Carpeta de Videos en Drive](https://drive.google.com/drive/folders/1_mWed9QfL1CgWO-rY80KTlApPl-uCNg3?usp=sharing)**

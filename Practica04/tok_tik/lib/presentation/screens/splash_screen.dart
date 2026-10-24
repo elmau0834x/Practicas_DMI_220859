@@ -8,7 +8,7 @@ import 'package:tok_tik/presentation/screens/home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
-    this.duration = const Duration(milliseconds: 3500),
+    this.duration = const Duration(seconds: 4),
     this.playIntroSound,
     this.homeBuilder,
     super.key,

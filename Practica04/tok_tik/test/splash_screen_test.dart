@@ -7,6 +7,10 @@ import 'package:tok_tik/presentation/screens/splash_screen.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  test('splash screen keeps audio audible for four seconds by default', () {
+    expect(const SplashScreen().duration, const Duration(seconds: 4));
+  });
+
   testWidgets('plays the active theme intro once and replaces the splash', (
     tester,
   ) async {
